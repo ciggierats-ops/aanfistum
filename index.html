@@ -1,0 +1,1026 @@
+<!doctype html>
+<html lang="id" class="scroll-smooth"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Limfatik &amp; Imunitas</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            200: '#99f6e4',
+                            300: '#5eead4',
+                            400: '#2dd4bf',
+                            500: '#14b8a6', // Primary Teal
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            800: '#115e59',
+                            900: '#134e4a',
+                        },
+                        accent: {
+                            500: '#f59e0b', // Amber
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: '"Plus Jakarta Sans"', sans-serif;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Hero Pattern Background */
+        .hero-pattern {
+            background-color: #f0fdfa;
+            background-image: radial-gradient(#14b8a6 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* Reading Progress Bar */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: #14b8a6;
+            width: 0%;
+            z-index: 1000;
+            transition: width 0.1s ease;
+        }
+
+        /* Glassmorphism utility */
+        .glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Timeline CSS */
+        .timeline-container {
+            position: relative;
+        }
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 24px; /* Center of the icon */
+            width: 2px;
+            background-color: #e2e8f0;
+            z-index: 0;
+        }
+        @media (min-width: 768px) {
+            .timeline-container.centered::before {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+
+        /* Accordion Transition */
+        .accordion-content {
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        .accordion-content.active {
+            opacity: 1;
+        }
+
+        /* Tab Transition */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Highlight Text */
+        .highlight {
+            background: linear-gradient(120deg, #ccfbf1 0%, #ccfbf1 100%);
+            background-repeat: no-repeat;
+            background-size: 100% 30%;
+            background-position: 0 90%;
+            font-weight: 600;
+        }
+
+        /* Sidebar active link */
+        .nav-link.active {
+            color: #0f766e;
+            font-weight: 600;
+            border-left: 3px solid #14b8a6;
+            background-color: #f0fdfa;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="progress-bar"></div>
+
+    <!-- Navbar -->
+    <nav class="glass fixed w-full top-0 z-50 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0 flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-brand-500 text-white flex items-center justify-center font-bold text-xl shadow-lg">
+                        <i class="fa-solid fa-shield-virus"></i>
+                    </div>
+                    <span class="font-heading font-bold text-xl text-slate-800 tracking-tight">Imunobiologi</span>
+                </div>
+                
+                <!-- Desktop Nav -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="#beranda" class="text-slate-600 hover:text-brand-600 font-medium transition-colors">Beranda</a>
+                    <a href="#materi" class="text-slate-600 hover:text-brand-600 font-medium transition-colors">Materi</a>
+                    <a href="#kuis" class="text-slate-600 hover:text-brand-600 font-medium transition-colors">Kuis Evaluasi</a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-slate-600 hover:text-brand-600 focus:outline-none p-2">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Nav Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-200">
+            <div class="px-4 pt-2 pb-4 space-y-1">
+                <a href="#beranda" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-brand-600 hover:bg-brand-50">Beranda</a>
+                <a href="#materi" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-brand-600 hover:bg-brand-50">Materi</a>
+                <a href="#kuis" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-brand-600 hover:bg-brand-50">Kuis Evaluasi</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="beranda" class="hero-pattern pt-32 pb-20 lg:pt-40 lg:pb-28 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div data-aos="fade-up" class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-100 text-brand-700 text-sm font-semibold mb-6">
+                <i class="fa-solid fa-book-medical"></i> Materi Pembelajaran Interaktif
+            </div>
+            <h1 data-aos="fade-up" data-aos-delay="100" class="text-4xl md:text-5xl lg:text-6xl font-heading font-extrabold text-slate-900 leading-tight mb-6">
+                Sistem Limfatik <br class="hidden md:block"> &amp; Imunitas Tubuh
+            </h1>
+            <p data-aos="fade-up" data-aos-delay="200" class="max-w-2xl mx-auto text-lg md:text-xl text-slate-600 mb-10 leading-relaxed">
+                Pelajari bagaimana jaringan pembuluh, organ limfatik, dan sel-sel imun bekerja sama secara luar biasa untuk menjaga homeostasis dan mempertahankan tubuh Anda dari patogen.
+            </p>
+            <div data-aos="fade-up" data-aos-delay="300" class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#materi" class="inline-flex justify-center items-center gap-2 px-8 py-4 bg-brand-600 text-white rounded-xl font-semibold text-lg hover:bg-brand-700 hover:shadow-lg hover:shadow-brand-500/30 transition-all duration-300 transform hover:-translate-y-1">
+                    Mulai Belajar <i class="fa-solid fa-arrow-right"></i>
+                </a>
+                <a href="#pendahuluan" class="inline-flex justify-center items-center gap-2 px-8 py-4 bg-white text-slate-700 border border-slate-300 rounded-xl font-semibold text-lg hover:bg-slate-50 transition-all duration-300">
+                    Baca Pengantar
+                </a>
+            </div>
+            
+            <!-- Info Cards -->
+            <div data-aos="fade-up" data-aos-delay="400" class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto text-left">
+                <div class="bg-white/60 backdrop-blur-sm p-6 rounded-2xl border border-slate-200 shadow-sm flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-droplet"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-heading font-bold text-slate-800">Sistem Limfatik</h3>
+                        <p class="text-sm text-slate-600 mt-1">Sirkulasi cairan limfa dan keseimbangan cairan tubuh.</p>
+                    </div>
+                </div>
+                <div class="bg-white/60 backdrop-blur-sm p-6 rounded-2xl border border-slate-200 shadow-sm flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-heading font-bold text-slate-800">Imunitas Bawaan</h3>
+                        <p class="text-sm text-slate-600 mt-1">Pertahanan lini pertama dan kedua yang bekerja cepat.</p>
+                    </div>
+                </div>
+                <div class="bg-white/60 backdrop-blur-sm p-6 rounded-2xl border border-slate-200 shadow-sm flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-disease"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-heading font-bold text-slate-800">Imunitas Spesifik</h3>
+                        <p class="text-sm text-slate-600 mt-1">Peran antibodi dan limfosit T/B dalam memori imun.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" id="materi">
+        <div class="flex flex-col lg:flex-row gap-8">
+            
+            <!-- Sidebar Navigation (Desktop) -->
+            <aside class="hidden lg:block w-72 shrink-0">
+                <div class="sticky top-24 bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+                    <h4 class="font-heading font-bold text-slate-800 mb-4 px-2 uppercase text-sm tracking-wider">Daftar Materi</h4>
+                    <nav class="space-y-1" id="sidebar-nav">
+                        <a href="#pendahuluan" class="nav-link block px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition-colors">Pendahuluan</a>
+                        <a href="#materi-2-1" class="nav-link block px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition-colors">Aliran Limfa</a>
+                        <a href="#materi-2-2" class="nav-link block px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition-colors">Organ Primer</a>
+                        <a href="#materi-2-3" class="nav-link block px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition-colors">Organ Sekunder</a>
+                        <a href="#materi-2-4" class="nav-link block px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition-colors">Lini Pertama (Fisik/Kimia)</a>
+                        <a href="#materi-2-5" class="nav-link block px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition-colors">Lini Kedua (Fagositosis)</a>
+                        <a href="#materi-2-6" class="nav-link block px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition-colors">Imunitas Spesifik Seluler</a>
+                        <a href="#materi-2-7" class="nav-link block px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition-colors">Imunitas Spesifik Humoral</a>
+                        <a href="#materi-2-8" class="nav-link block px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition-colors">Struktur &amp; Jenis Antibodi</a>
+                        <a href="#materi-2-9" class="nav-link block px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition-colors">Kelainan Sistem Imun</a>
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="flex-1 space-y-16">
+
+                <!-- Pendahuluan -->
+                <section id="pendahuluan" class="scroll-mt-24 content-section">
+                    <div data-aos="fade-up" class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-brand-50 rounded-bl-full -z-10"></div>
+                        <h2 class="text-3xl font-heading font-bold text-slate-800 mb-4">Mengenal Sistem Limfatik</h2>
+                        <p class="text-slate-600 leading-relaxed mb-4">
+                            Sistem limfatik merupakan jaringan pembuluh dan organ yang berfungsi mengembalikan cairan interstisial ke sirkulasi darah serta menopang mekanisme pertahanan tubuh. Cairan yang keluar dari kapiler darah dan tidak kembali terserap, akan memasuki pembuluh limfatik dan disebut <span class="highlight">limfe</span>.
+                        </p>
+                        <div class="flex items-start gap-4 p-4 bg-brand-50 rounded-xl border border-brand-100">
+                            <i class="fa-solid fa-lightbulb text-brand-500 text-xl mt-1"></i>
+                            <p class="text-sm text-brand-900 leading-relaxed">
+                                Secara fungsional, sistem ini berperan menjaga homeostasis cairan ekstraseluler, membersihkan zat sisa metabolisme, serta mengoptimalkan imunitas terhadap bakteri, virus, parasit, dan antigen lainnya.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2.1 Komponen & Aliran Limfa -->
+                <section id="materi-2-1" class="scroll-mt-24 content-section">
+                    <h2 data-aos="fade-right" class="text-2xl font-heading font-bold text-slate-800 mb-6 flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-full bg-brand-100 text-brand-600 flex items-center justify-center text-sm">1</span>
+                        Komponen &amp; Jalur Aliran Limfa
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <div data-aos="fade-up" class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                            <h3 class="font-heading font-bold text-lg mb-3"><i class="fa-solid fa-boxes-stacked text-brand-500 mr-2"></i>Komponen Penyusun</h3>
+                            <p class="text-slate-600 text-sm mb-4">Terdiri dari sumsum tulang belakang, limpa, timus, kelenjar getah bening, cairan limfe, dan pembuluh limfatik.</p>
+                            <ul class="space-y-2 text-sm text-slate-600">
+                                <li class="flex gap-2"><i class="fa-solid fa-check text-green-500 mt-1"></i> Mengembalikan kelebihan cairan interstisial.</li>
+                                <li class="flex gap-2"><i class="fa-solid fa-check text-green-500 mt-1"></i> Membawa lemak emulsi dari usus.</li>
+                                <li class="flex gap-2"><i class="fa-solid fa-check text-green-500 mt-1"></i> Mengangkut &amp; tempat limfosit.</li>
+                                <li class="flex gap-2"><i class="fa-solid fa-check text-green-500 mt-1"></i> Menyaring mikroorganisme.</li>
+                            </ul>
+                        </div>
+                        <div data-aos="fade-up" data-aos-delay="100" class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                            <h3 class="font-heading font-bold text-lg mb-3"><i class="fa-solid fa-water text-blue-500 mr-2"></i>Pembentukan Cairan</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed">
+                                Limfe berasal dari plasma darah arteri. Sekitar 90% cairan interstisial kembali ke kapiler, namun 10% tertinggal. Limfe membawa produk metabolisme untuk dibuang. Kapiler limfe sangat permeabel, mengumpulkan cairan jaringan dan protein, lalu menyatu membentuk vasa limfatika.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Flow/Stepper -->
+                    <div data-aos="fade-up" class="bg-slate-50 p-6 md:p-8 rounded-3xl border border-slate-200">
+                        <h3 class="font-heading font-bold text-center mb-8">Siklus Aliran Limfa</h3>
+                        <div class="flex flex-col md:flex-row justify-between items-center relative z-10 gap-4">
+                            <!-- Line connecting on desktop -->
+                            <div class="hidden md:block absolute top-1/2 left-10 right-10 h-1 bg-brand-200 -z-10 transform -translate-y-1/2"></div>
+                            
+                            <div class="flex flex-col items-center text-center max-w-[200px] bg-white p-4 rounded-xl shadow-sm md:shadow-none md:bg-transparent">
+                                <div class="w-14 h-14 rounded-full bg-brand-500 text-white flex items-center justify-center text-xl font-bold mb-3 shadow-md shadow-brand-200">1</div>
+                                <h4 class="font-bold text-slate-800 text-sm">Cairan Keluar Kapiler</h4>
+                                <p class="text-xs text-slate-500 mt-1">Terkumpul di jaringan tubuh sebagai cairan interstisial.</p>
+                            </div>
+                            <div class="hidden md:block text-brand-300"><i class="fa-solid fa-chevron-right"></i></div>
+                            
+                            <div class="flex flex-col items-center text-center max-w-[200px] bg-white p-4 rounded-xl shadow-sm md:shadow-none md:bg-transparent">
+                                <div class="w-14 h-14 rounded-full bg-brand-500 text-white flex items-center justify-center text-xl font-bold mb-3 shadow-md shadow-brand-200">2</div>
+                                <h4 class="font-bold text-slate-800 text-sm">Sistem Limfatik Mengambil</h4>
+                                <p class="text-xs text-slate-500 mt-1">Mengumpulkan cairan sisa melewati kelenjar getah bening.</p>
+                            </div>
+                            <div class="hidden md:block text-brand-300"><i class="fa-solid fa-chevron-right"></i></div>
+                            
+                            <div class="flex flex-col items-center text-center max-w-[200px] bg-white p-4 rounded-xl shadow-sm md:shadow-none md:bg-transparent">
+                                <div class="w-14 h-14 rounded-full bg-brand-500 text-white flex items-center justify-center text-xl font-bold mb-3 shadow-md shadow-brand-200">3</div>
+                                <h4 class="font-bold text-slate-800 text-sm">Penyaringan &amp; Pengembalian</h4>
+                                <p class="text-xs text-slate-500 mt-1">Racun/bakteri disaring, cairan dikembalikan ke aliran darah.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2.2 Organ Primer -->
+                <section id="materi-2-2" class="scroll-mt-24 content-section">
+                    <h2 data-aos="fade-right" class="text-2xl font-heading font-bold text-slate-800 mb-6 flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-full bg-brand-100 text-brand-600 flex items-center justify-center text-sm">2</span>
+                        Organ Limfatik Primer
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Sumsum Tulang -->
+                        <div data-aos="zoom-in" class="group bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
+                            <div class="h-32 bg-gradient-to-br from-red-100 to-red-50 flex flex-col justify-center items-center">
+                                <i class="fa-solid fa-bone text-4xl text-red-500 mb-2"></i>
+                                <h3 class="font-heading font-bold text-lg">Sumsum Tulang Merah</h3>
+                            </div>
+                            <div class="p-6">
+                                <p class="text-slate-600 text-sm mb-3">
+                                    Sumber utama limfosit B dan T. Semua limfosit berasal dari sel induk di sini.
+                                </p>
+                                <div class="bg-slate-50 p-3 rounded-lg text-sm text-slate-700 border-l-4 border-red-400">
+                                    <strong>Fakta:</strong> Limfosit B tetap di sini saat dewasa, sementara limfosit T bermigrasi ke Timus.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Timus -->
+                        <div data-aos="zoom-in" data-aos-delay="100" class="group bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
+                            <div class="h-32 bg-gradient-to-br from-purple-100 to-purple-50 flex flex-col justify-center items-center">
+                                <i class="fa-solid fa-lungs text-4xl text-purple-500 mb-2"></i>
+                                <h3 class="font-heading font-bold text-lg">Kelenjar Timus</h3>
+                            </div>
+                            <div class="p-6">
+                                <p class="text-slate-600 text-sm mb-3">
+                                    Organ bilobed antara sternum dan aorta. Tempat pematangan Limfosit T (timosit).
+                                </p>
+                                <div class="bg-slate-50 p-3 rounded-lg text-sm text-slate-700 border-l-4 border-purple-400">
+                                    <strong>Fakta:</strong> Mengandung daerah korteks dan akan mengalami atrofi (menyusut) setelah pubertas.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2.3 Organ Sekunder -->
+                <section id="materi-2-3" class="scroll-mt-24 content-section">
+                    <h2 data-aos="fade-right" class="text-2xl font-heading font-bold text-slate-800 mb-6 flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-full bg-brand-100 text-brand-600 flex items-center justify-center text-sm">3</span>
+                        Organ Limfatik Sekunder
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Nodus Limfa -->
+                        <div data-aos="fade-up" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative pt-10">
+                            <div class="absolute -top-5 left-6 w-12 h-12 bg-emerald-500 text-white rounded-xl flex items-center justify-center text-xl shadow-lg">
+                                <i class="fa-solid fa-network-wired"></i>
+                            </div>
+                            <h3 class="font-heading font-bold text-lg mb-2">Nodus Limfa</h3>
+                            <p class="text-sm text-slate-600 mb-4">Sekelompok limfosit padat tanpa kapsul fibrosa. Terletak di saluran pernapasan dan pencernaan.</p>
+                            <ul class="text-xs text-slate-500 space-y-2">
+                                <li>• <strong>Amandel:</strong> Di faring.</li>
+                                <li>• <strong>Peyer's patch:</strong> Di usus kecil.</li>
+                                <li>• <strong>MALT:</strong> Di bawah mukosa saluran pencernaan/respirasi.</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Limpa -->
+                        <div data-aos="fade-up" data-aos-delay="100" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative pt-10">
+                            <div class="absolute -top-5 left-6 w-12 h-12 bg-rose-500 text-white rounded-xl flex items-center justify-center text-xl shadow-lg">
+                                <i class="fa-solid fa-heart"></i>
+                            </div>
+                            <h3 class="font-heading font-bold text-lg mb-2">Limpa (Spleen)</h3>
+                            <p class="text-sm text-slate-600 mb-4">Massa jaringan limfatik terbesar (antara perut &amp; diafragma). Mengandung pulpa putih dan merah.</p>
+                            <ul class="text-xs text-slate-500 space-y-2">
+                                <li>• Gudang darah.</li>
+                                <li>• Pabrik sel darah (terutama limfosit).</li>
+                                <li>• Tempat penghancur eritrosit.</li>
+                                <li>• Menghasilkan antibodi.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Tonsil -->
+                        <div data-aos="fade-up" data-aos-delay="200" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative pt-10">
+                            <div class="absolute -top-5 left-6 w-12 h-12 bg-amber-500 text-white rounded-xl flex items-center justify-center text-xl shadow-lg">
+                                <i class="fa-solid fa-head-side-cough"></i>
+                            </div>
+                            <h3 class="font-heading font-bold text-lg mb-2">Tonsil</h3>
+                            <p class="text-sm text-slate-600 mb-4">Jaringan limfatik di sekitar faring. Membentuk cincin Waldeyer (pertahanan mukosa).</p>
+                            <ul class="text-xs text-slate-500 space-y-2">
+                                <li>• Filter penangkap bakteri/virus.</li>
+                                <li>• 50% limfosit B, 50% limfosit T.</li>
+                                <li>• Memiliki sel M, makrofag, sel dendrit.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2.4 Lini Pertama -->
+                <section id="materi-2-4" class="scroll-mt-24 content-section">
+                    <div class="bg-slate-800 rounded-3xl p-8 text-white overflow-hidden relative">
+                        <div class="absolute -right-20 -bottom-20 opacity-10">
+                            <i class="fa-solid fa-shield text-[200px]"></i>
+                        </div>
+                        <h2 data-aos="fade-right" class="text-2xl font-heading font-bold mb-4 relative z-10">
+                            Lini Pertama: Pertahanan Fisik &amp; Kimia
+                        </h2>
+                        <p class="text-slate-300 text-sm mb-8 max-w-2xl relative z-10">
+                            Imunitas non-spesifik bekerja secara terus-menerus tanpa menunggu infeksi, membentuk penghalang awal agar patogen tidak mencapai jaringan internal.
+                        </p>
+
+                        <!-- Responsive Table -->
+                        <div data-aos="fade-up" class="overflow-x-auto relative z-10">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="border-b border-slate-600 text-slate-300 font-heading">
+                                        <th class="py-3 px-4">Komponen</th>
+                                        <th class="py-3 px-4">Bentuk Pertahanan</th>
+                                        <th class="py-3 px-4">Fungsi Utama</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-sm">
+                                    <tr class="border-b border-slate-700 hover:bg-slate-700/50 transition">
+                                        <td class="py-3 px-4 font-semibold text-brand-300">Kulit</td>
+                                        <td class="py-3 px-4 text-slate-300">Keratinisasi &amp; pelepasan sel</td>
+                                        <td class="py-3 px-4 text-slate-400">Menghambat masuknya mikroorganisme</td>
+                                    </tr>
+                                    <tr class="border-b border-slate-700 hover:bg-slate-700/50 transition">
+                                        <td class="py-3 px-4 font-semibold text-brand-300">Keringat &amp; Sekresi Kulit</td>
+                                        <td class="py-3 px-4 text-slate-300">pH rendah &amp; pembilasan</td>
+                                        <td class="py-3 px-4 text-slate-400">Menghambat &amp; membersihkan patogen</td>
+                                    </tr>
+                                    <tr class="border-b border-slate-700 hover:bg-slate-700/50 transition">
+                                        <td class="py-3 px-4 font-semibold text-brand-300">Membran Mukosa &amp; Silia</td>
+                                        <td class="py-3 px-4 text-slate-300">Mukus &amp; Gerakan mukosiliar</td>
+                                        <td class="py-3 px-4 text-slate-400">Menangkap &amp; mengeluarkan partikel asing</td>
+                                    </tr>
+                                    <tr class="border-b border-slate-700 hover:bg-slate-700/50 transition">
+                                        <td class="py-3 px-4 font-semibold text-brand-300">Saliva &amp; Lambung</td>
+                                        <td class="py-3 px-4 text-slate-300">Enzim Lisozim &amp; Lingkungan Asam</td>
+                                        <td class="py-3 px-4 text-slate-400">Merusak dinding bakteri &amp; menghancurkan mikrob</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-700/50 transition">
+                                        <td class="py-3 px-4 font-semibold text-brand-300">Mikrobiota Normal</td>
+                                        <td class="py-3 px-4 text-slate-300">Kompetisi biologis</td>
+                                        <td class="py-3 px-4 text-slate-400">Menghambat kolonisasi patogen asing</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2.5 Lini Kedua (Accordions) -->
+                <section id="materi-2-5" class="scroll-mt-24 content-section">
+                    <h2 data-aos="fade-right" class="text-2xl font-heading font-bold text-slate-800 mb-6">
+                        Lini Kedua: Respons Internal
+                    </h2>
+                    <p class="text-slate-600 mb-6">Aktif ketika patogen berhasil melewati barier fisik. Bekerja cepat dan tidak spesifik terhadap satu jenis antigen.</p>
+                    
+                    <div class="space-y-4">
+                        <!-- Accordion Item 1 -->
+                        <div data-aos="fade-up" class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                            <button class="accordion-btn w-full px-6 py-4 text-left font-heading font-bold text-slate-800 flex justify-between items-center hover:bg-slate-50 transition">
+                                <span><i class="fa-solid fa-viruses text-red-500 mr-2"></i> Fagositosis</span>
+                                <i class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-300"></i>
+                            </button>
+                            <div class="accordion-content bg-slate-50 px-6">
+                                <div class="pb-4 text-sm text-slate-600 leading-relaxed">
+                                    <p class="mb-2">Proses penelanan dan penghancuran partikel oleh sel fagosit (neutrofil dan makrofag).</p>
+                                    <ol class="list-decimal pl-5 space-y-1">
+                                        <li>Pengenalan &amp; perlekatan pada target (bisa diperkuat oleh <em>opsonisasi</em>).</li>
+                                        <li>Membran membentuk vesikel (fagosom).</li>
+                                        <li>Fusi dengan lisosom membentuk <strong>fagolisosom</strong>.</li>
+                                        <li>Enzim lisozim menghancurkan mikroorganisme.</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Accordion Item 2 -->
+                        <div data-aos="fade-up" data-aos-delay="100" class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                            <button class="accordion-btn w-full px-6 py-4 text-left font-heading font-bold text-slate-800 flex justify-between items-center hover:bg-slate-50 transition">
+                                <span><i class="fa-solid fa-fire text-orange-500 mr-2"></i> Inflamasi</span>
+                                <i class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-300"></i>
+                            </button>
+                            <div class="accordion-content bg-slate-50 px-6">
+                                <div class="pb-4 text-sm text-slate-600 leading-relaxed">
+                                    <p class="mb-2">Ditandai oleh panas, kemerahan, nyeri, dan bengkak. Tujuannya mengarahkan komponen pertahanan ke lokasi gangguan.</p>
+                                    <ul class="list-disc pl-5 space-y-1">
+                                        <li>Sel rusak melepas <strong>histamin</strong> → Vasodilatasi (pelebaran pembuluh darah) → kemerahan/panas.</li>
+                                        <li>Permeabilitas meningkat → plasma keluar → edema (bengkak).</li>
+                                        <li>Leukotrien menarik neutrofil (kemotaksis), prostaglandin memicu nyeri.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Accordion Item 3 -->
+                        <div data-aos="fade-up" data-aos-delay="200" class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                            <button class="accordion-btn w-full px-6 py-4 text-left font-heading font-bold text-slate-800 flex justify-between items-center hover:bg-slate-50 transition">
+                                <span><i class="fa-solid fa-temperature-arrow-up text-red-600 mr-2"></i> Demam</span>
+                                <i class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-300"></i>
+                            </button>
+                            <div class="accordion-content bg-slate-50 px-6">
+                                <div class="pb-4 text-sm text-slate-600 leading-relaxed">
+                                    <p>Respons sistemik. Zat pirogen dan sitokin merangsang pembentukan <strong>PGE2</strong> yang bekerja pada hipotalamus, meningkatkan <em>set point</em> suhu tubuh. Tubuh merespons dengan vasokonstriksi perifer untuk mempertahankan panas, sebagai bentuk pertahanan menghambat pertumbuhan patogen.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2.6 Spesifik Seluler -->
+                <section id="materi-2-6" class="scroll-mt-24 content-section">
+                    <h2 data-aos="fade-right" class="text-2xl font-heading font-bold text-slate-800 mb-6">
+                        Imunitas Spesifik Seluler
+                    </h2>
+                    <p class="text-slate-600 mb-6">Melibatkan Limfosit T, berperan menghadapi sel tubuh yang terinfeksi patogen intraseluler. Sel T mengenali antigen yang dipresentasikan oleh APC bersama molekul MHC.</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div data-aos="fade-right" class="bg-white rounded-xl border border-blue-200 shadow-sm p-6 border-t-4 border-t-blue-500">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600"><i class="fa-solid fa-handshake-angle"></i></div>
+                                <h3 class="font-heading font-bold text-lg">Sel T Helper (Th)</h3>
+                            </div>
+                            <ul class="text-sm text-slate-600 space-y-2">
+                                <li><strong>Penanda:</strong> CD4+</li>
+                                <li><strong>MHC:</strong> Kelas II</li>
+                                <li><strong>Fungsi:</strong> Mengatur &amp; memperkuat respons imun via sekresi sitokin.</li>
+                                <li><strong>Target:</strong> Sel imun lain (Makrofag, Sel B).</li>
+                                <li class="text-xs text-blue-700 bg-blue-50 p-2 rounded">Th1 perkuat makrofag, Th2 bantu sel B.</li>
+                            </ul>
+                        </div>
+
+                        <div data-aos="fade-left" class="bg-white rounded-xl border border-red-200 shadow-sm p-6 border-t-4 border-t-red-500">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-600"><i class="fa-solid fa-crosshairs"></i></div>
+                                <h3 class="font-heading font-bold text-lg">Sel T Sitotoksik (CTL)</h3>
+                            </div>
+                            <ul class="text-sm text-slate-600 space-y-2">
+                                <li><strong>Penanda:</strong> CD8+</li>
+                                <li><strong>MHC:</strong> Kelas I</li>
+                                <li><strong>Fungsi:</strong> Menghancurkan sel target secara langsung.</li>
+                                <li><strong>Target:</strong> Sel terinfeksi / sel abnormal.</li>
+                                <li class="text-xs text-red-700 bg-red-50 p-2 rounded">Melepas perforin &amp; granzim → memicu apoptosis.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2.7 Spesifik Humoral -->
+                <section id="materi-2-7" class="scroll-mt-24 content-section">
+                    <h2 data-aos="fade-right" class="text-2xl font-heading font-bold text-slate-800 mb-6">
+                        Imunitas Spesifik Humoral
+                    </h2>
+                    <p class="text-slate-600 mb-8">Melibatkan limfosit B dan antibodi untuk menetralisir patogen di luar sel (cairan tubuh).</p>
+
+                    <div class="timeline-container px-2">
+                        <!-- Step 1 -->
+                        <div data-aos="fade-up" class="relative pl-12 pb-8">
+                            <div class="absolute left-0 top-0 w-12 h-12 bg-white border-4 border-brand-500 rounded-full flex items-center justify-center font-bold text-brand-600 z-10 shadow-sm">1</div>
+                            <h4 class="font-bold text-slate-800 text-lg mb-1">Pengenalan Antigen</h4>
+                            <p class="text-sm text-slate-600">Sel B mengenali antigen asli via imunoglobulin permukaannya. Butuh bantuan Th2 (sinyal sitokin) untuk aktivasi lengkap.</p>
+                        </div>
+                        <!-- Step 2 -->
+                        <div data-aos="fade-up" class="relative pl-12 pb-8">
+                            <div class="absolute left-0 top-0 w-12 h-12 bg-white border-4 border-brand-500 rounded-full flex items-center justify-center font-bold text-brand-600 z-10 shadow-sm">2</div>
+                            <h4 class="font-bold text-slate-800 text-lg mb-1">Proliferasi</h4>
+                            <p class="text-sm text-slate-600">Sel B teraktivasi membelah diri (ekspansi klonal) menghasilkan banyak sel spesifik.</p>
+                        </div>
+                        <!-- Step 3 -->
+                        <div data-aos="fade-up" class="relative pl-12 pb-8">
+                            <div class="absolute left-0 top-0 w-12 h-12 bg-white border-4 border-brand-500 rounded-full flex items-center justify-center font-bold text-brand-600 z-10 shadow-sm">3</div>
+                            <h4 class="font-bold text-slate-800 text-lg mb-1">Diferensiasi</h4>
+                            <p class="text-sm text-slate-600">Menjadi <strong>Sel Plasma</strong> (pabrik antibodi) dan <strong>Sel B Memori</strong> (untuk respons masa depan).</p>
+                        </div>
+                        <!-- Step 4 -->
+                        <div data-aos="fade-up" class="relative pl-12 pb-8">
+                            <div class="absolute left-0 top-0 w-12 h-12 bg-brand-500 border-4 border-brand-200 rounded-full flex items-center justify-center text-white z-10 shadow-sm"><i class="fa-solid fa-check"></i></div>
+                            <h4 class="font-bold text-slate-800 text-lg mb-1">Produksi &amp; Class Switching</h4>
+                            <p class="text-sm text-slate-600">Sel plasma mensekresi antibodi (Awalnya IgM, lalu bisa berubah kelas <em>class switching</em> jadi IgG/IgA/IgE tanpa mengubah spesifisitas).</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2.8 Struktur Antibodi -->
+                <section id="materi-2-8" class="scroll-mt-24 content-section">
+                    <h2 data-aos="fade-right" class="text-2xl font-heading font-bold text-slate-800 mb-6">
+                        Jenis-Jenis Imunoglobulin (Antibodi)
+                    </h2>
+                    
+                    <div data-aos="fade-up" class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                        <!-- Tab Headers -->
+                        <div class="flex border-b border-slate-200 overflow-x-auto hide-scrollbar">
+                            <button class="tab-btn active flex-1 py-4 px-6 font-bold text-sm text-brand-600 border-b-2 border-brand-500 bg-brand-50 whitespace-nowrap" data-target="tab-igg">IgG</button>
+                            <button class="tab-btn flex-1 py-4 px-6 font-bold text-sm text-slate-500 border-b-2 border-transparent hover:text-slate-700 whitespace-nowrap" data-target="tab-igm">IgM</button>
+                            <button class="tab-btn flex-1 py-4 px-6 font-bold text-sm text-slate-500 border-b-2 border-transparent hover:text-slate-700 whitespace-nowrap" data-target="tab-iga">IgA</button>
+                            <button class="tab-btn flex-1 py-4 px-6 font-bold text-sm text-slate-500 border-b-2 border-transparent hover:text-slate-700 whitespace-nowrap" data-target="tab-ige">IgE</button>
+                            <button class="tab-btn flex-1 py-4 px-6 font-bold text-sm text-slate-500 border-b-2 border-transparent hover:text-slate-700 whitespace-nowrap" data-target="tab-igd">IgD</button>
+                        </div>
+                        
+                        <!-- Tab Contents -->
+                        <div class="p-6 md:p-8 min-h-[200px] flex items-center">
+                            <!-- IgG -->
+                            <div id="tab-igg" class="tab-content active w-full">
+                                <div class="flex items-center gap-4 mb-3">
+                                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xl"><i class="fa-solid fa-g"></i></div>
+                                    <h3 class="text-xl font-bold text-slate-800">Imunoglobulin G</h3>
+                                </div>
+                                <p class="text-slate-600 text-sm">Antibodi utama pada respons sekunder di dalam darah. Berbentuk monomer. Berperan membersihkan patogen dan dapat melewati plasenta untuk perlindungan janin.</p>
+                            </div>
+                            <!-- IgM -->
+                            <div id="tab-igm" class="tab-content w-full">
+                                <div class="flex items-center gap-4 mb-3">
+                                    <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center text-xl"><i class="fa-solid fa-m"></i></div>
+                                    <h3 class="text-xl font-bold text-slate-800">Imunoglobulin M</h3>
+                                </div>
+                                <p class="text-slate-600 text-sm">Antibodi pertama diproduksi dalam respons primer. Monomer (sebagai reseptor sel B) atau Pentamer (disekresikan). Sangat efektif mengaktifkan komplemen.</p>
+                            </div>
+                            <!-- IgA -->
+                            <div id="tab-iga" class="tab-content w-full">
+                                <div class="flex items-center gap-4 mb-3">
+                                    <div class="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-xl"><i class="fa-solid fa-a"></i></div>
+                                    <h3 class="text-xl font-bold text-slate-800">Imunoglobulin A</h3>
+                                </div>
+                                <p class="text-slate-600 text-sm">Terdapat pada mukosa (mukus, saliva, air mata) dalam bentuk dimer, dan di darah bentuk monomer. Ada di ASI untuk lindungi bayi.</p>
+                            </div>
+                            <!-- IgE -->
+                            <div id="tab-ige" class="tab-content w-full">
+                                <div class="flex items-center gap-4 mb-3">
+                                    <div class="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-xl"><i class="fa-solid fa-e"></i></div>
+                                    <h3 class="text-xl font-bold text-slate-800">Imunoglobulin E</h3>
+                                </div>
+                                <p class="text-slate-600 text-sm">Berhubungan kuat dengan respons alergi. Berikatan dengan sel mast dan memicu degranulasi.</p>
+                            </div>
+                            <!-- IgD -->
+                            <div id="tab-igd" class="tab-content w-full">
+                                <div class="flex items-center gap-4 mb-3">
+                                    <div class="w-12 h-12 bg-gray-100 text-gray-600 rounded-full flex items-center justify-center text-xl"><i class="fa-solid fa-d"></i></div>
+                                    <h3 class="text-xl font-bold text-slate-800">Imunoglobulin D</h3>
+                                </div>
+                                <p class="text-slate-600 text-sm">Terdapat pada permukaan sel B naif. Berfungsi sebagai reseptor antigen dan berperan dalam aktivasi sel B.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2.9 Kelainan -->
+                <section id="materi-2-9" class="scroll-mt-24 content-section">
+                    <h2 data-aos="fade-right" class="text-2xl font-heading font-bold text-slate-800 mb-6">
+                        Kelainan Sistem Imunitas
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div data-aos="zoom-in" class="bg-amber-50 rounded-2xl p-6 border border-amber-200">
+                            <h3 class="font-bold text-amber-900 mb-2 text-lg"><i class="fa-solid fa-battery-quarter mr-2"></i>Imunodefisiensi</h3>
+                            <p class="text-sm text-amber-800 mb-3">Sistem imun tidak dapat menjalankan fungsi optimal.</p>
+                            <ul class="text-sm text-amber-800 space-y-1 list-disc pl-4">
+                                <li><strong>Primer:</strong> Gangguan genetik intrinsik.</li>
+                                <li><strong>Sekunder:</strong> Akibat faktor luar (obat, infeksi virus seperti HIV yang menyerang T helper).</li>
+                            </ul>
+                        </div>
+
+                        <div data-aos="zoom-in" data-aos-delay="100" class="bg-rose-50 rounded-2xl p-6 border border-rose-200">
+                            <h3 class="font-bold text-rose-900 mb-2 text-lg"><i class="fa-solid fa-ban mr-2"></i>Penyakit Autoimun</h3>
+                            <p class="text-sm text-rose-800 mb-3">Hilangnya toleransi sistem imun terhadap jaringan tubuh sendiri.</p>
+                            <ul class="text-sm text-rose-800 space-y-1">
+                                <li>Contoh: <em>Rheumatoid arthritis</em> (nyeri sendi), SLE (Lupus).</li>
+                            </ul>
+                        </div>
+                        
+                        <div data-aos="fade-up" class="md:col-span-2 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                            <h3 class="font-bold text-slate-800 mb-4 text-lg"><i class="fa-solid fa-triangle-exclamation text-orange-500 mr-2"></i>Hipersensitivitas (4 Tipe)</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                <div class="p-3 bg-slate-50 rounded text-sm"><strong class="block text-brand-600 mb-1">Tipe I</strong>Alergi (dimediasi IgE, sel mast).</div>
+                                <div class="p-3 bg-slate-50 rounded text-sm"><strong class="block text-brand-600 mb-1">Tipe II</strong>Antibodi serang sel sendiri (IgG).</div>
+                                <div class="p-3 bg-slate-50 rounded text-sm"><strong class="block text-brand-600 mb-1">Tipe III</strong>Endapan kompleks imun.</div>
+                                <div class="p-3 bg-slate-50 rounded text-sm"><strong class="block text-brand-600 mb-1">Tipe IV</strong>Dimediasi Sel T (lambat).</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Quiz Section -->
+                <section id="kuis" class="scroll-mt-24 content-section py-10 border-t border-slate-200 mt-10">
+                    <div class="bg-gradient-to-br from-brand-800 to-slate-900 rounded-3xl p-8 md:p-12 text-white shadow-xl text-center">
+                        <div id="quiz-intro">
+                            <i class="fa-solid fa-graduation-cap text-5xl text-brand-300 mb-4"></i>
+                            <h2 class="text-3xl font-heading font-bold mb-4">Uji Pemahaman Anda</h2>
+                            <p class="text-slate-300 mb-8 max-w-lg mx-auto">Selesaikan kuis singkat ini untuk mengevaluasi pemahaman Anda mengenai materi Sistem Limfatik dan Imunitas.</p>
+                            <button id="start-btn" class="px-8 py-3 bg-brand-500 hover:bg-brand-400 text-white font-bold rounded-full transition-transform transform hover:scale-105 shadow-lg">Mulai Kuis</button>
+                        </div>
+                        
+                        <div id="quiz-container" class="hidden max-w-2xl mx-auto text-left">
+                            <div class="flex justify-between items-center mb-6 border-b border-slate-600 pb-4">
+                                <span id="question-tracker" class="font-bold text-brand-300">Pertanyaan 1 dari 5</span>
+                                <span class="text-sm bg-slate-800 px-3 py-1 rounded-full text-slate-300">Skor: <span id="current-score">0</span></span>
+                            </div>
+                            
+                            <h3 id="question-text" class="text-xl font-medium mb-6 leading-relaxed">Pertanyaan akan muncul di sini?</h3>
+                            
+                            <div id="options-container" class="space-y-3">
+                                <!-- Options injected via JS -->
+                            </div>
+                            
+                            <div id="feedback-container" class="hidden mt-6 p-4 rounded-xl text-sm font-medium"></div>
+                            
+                            <div class="mt-6 text-right hidden" id="next-btn-container">
+                                <button id="next-btn" class="px-6 py-2 bg-white text-brand-900 font-bold rounded-lg hover:bg-slate-200 transition">Selanjutnya <i class="fa-solid fa-arrow-right ml-2"></i></button>
+                            </div>
+                        </div>
+
+                        <div id="result-container" class="hidden">
+                            <div class="w-24 h-24 mx-auto bg-brand-500 rounded-full flex items-center justify-center text-4xl mb-4 shadow-lg shadow-brand-500/50">
+                                <i class="fa-solid fa-trophy text-yellow-300"></i>
+                            </div>
+                            <h2 class="text-3xl font-heading font-bold mb-2">Kuis Selesai!</h2>
+                            <p class="text-slate-300 mb-6 text-lg">Skor Akhir Anda: <strong id="final-score" class="text-white text-2xl"></strong></p>
+                            <button id="restart-btn" class="px-6 py-2 border-2 border-brand-400 text-brand-200 rounded-full hover:bg-brand-500 hover:text-white transition">Ulangi Kuis</button>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-8 text-center border-t border-slate-800">
+        <p class="text-sm">Berdasarkan Makalah "Sistem Limfatik dan Imunitas" - Anatomi &amp; Fisiologi Tubuh Manusia.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Init AOS
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 50,
+        });
+
+        // Mobile Menu Toggle
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu on link click
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+        });
+
+        // Reading Progress Bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progress-bar').style.width = scrolled + '%';
+        });
+
+        // Accordion Logic
+        const accordions = document.querySelectorAll('.accordion-btn');
+        accordions.forEach(acc => {
+            acc.addEventListener('click', function() {
+                this.classList.toggle('active');
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('i.fa-chevron-down');
+                
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                    content.classList.remove('active');
+                    icon.style.transform = 'rotate(0deg)';
+                } else {
+                    // Close others (optional)
+                    document.querySelectorAll('.accordion-content').forEach(c => {
+                        c.style.maxHeight = null;
+                        c.classList.remove('active');
+                        c.previousElementSibling.querySelector('i.fa-chevron-down').style.transform = 'rotate(0deg)';
+                    });
+                    content.style.maxHeight = content.scrollHeight + "px";
+                    content.classList.add('active');
+                    icon.style.transform = 'rotate(180deg)';
+                }
+            });
+        });
+
+        // Tabs Logic
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active classes
+                tabBtns.forEach(b => {
+                    b.classList.remove('active', 'text-brand-600', 'border-brand-500', 'bg-brand-50');
+                    b.classList.add('text-slate-500', 'border-transparent');
+                });
+                tabContents.forEach(c => c.classList.remove('active'));
+
+                // Add active to clicked
+                btn.classList.add('active', 'text-brand-600', 'border-brand-500', 'bg-brand-50');
+                btn.classList.remove('text-slate-500', 'border-transparent');
+                
+                const target = document.getElementById(btn.getAttribute('data-target'));
+                target.classList.add('active');
+            });
+        });
+
+        // Scrollspy for Sidebar
+        const sections = document.querySelectorAll('.content-section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Quiz Logic
+        const quizData = [
+            {
+                question: "Dari manakah semua limfosit (B dan T) berasal sebelum mengalami pematangan?",
+                options: ["Kelenjar Timus", "Sumsum Tulang Belakang", "Nodus Limfa", "Limpa"],
+                answer: 1,
+                explanation: "Semua limfosit berasal dari sel induk di sumsum tulang belakang. Limfosit B tetap di sana, sementara T ke Timus."
+            },
+            {
+                question: "Enzim apa yang terdapat pada saliva dan berfungsi merusak dinding sel bakteri?",
+                options: ["Amilase", "Pepsin", "Lisozim", "Perforin"],
+                answer: 2,
+                explanation: "Lisozim adalah enzim dalam saliva yang dapat merusak komponen penyusun dinding sel bakteri (pertahanan kimiawi lini pertama)."
+            },
+            {
+                question: "Sel imun manakah yang berfungsi menghancurkan sel terinfeksi secara langsung dengan melepaskan perforin?",
+                options: ["Sel T Helper (CD4+)", "Sel T Sitotoksik (CD8+)", "Sel B Memori", "Makrofag"],
+                answer: 1,
+                explanation: "Sel T sitotoksik mengenali sel terinfeksi dan melepaskan perforin serta granzim untuk memicu apoptosis."
+            },
+            {
+                question: "Antibodi apa yang pertama kali diproduksi dalam respons imun primer dan sangat efektif mengaktifkan komplemen?",
+                options: ["IgG", "IgA", "IgE", "IgM"],
+                answer: 3,
+                explanation: "IgM adalah antibodi yang pertama kali diproduksi. Dalam darah bentuknya pentamer, sangat efektif mengikat antigen."
+            },
+            {
+                question: "Reaksi alergi yang melibatkan sel mast dan degranulasi termasuk dalam kategori hipersensitivitas tipe berapa?",
+                options: ["Tipe I", "Tipe II", "Tipe III", "Tipe IV"],
+                answer: 0,
+                explanation: "Hipersensitivitas tipe I dimediasi oleh antibodi IgE yang berikatan dengan sel mast, memicu respons alergi."
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let hasAnswered = false;
+
+        const startBtn = document.getElementById('start-btn');
+        const quizIntro = document.getElementById('quiz-intro');
+        const quizContainer = document.getElementById('quiz-container');
+        const resultContainer = document.getElementById('result-container');
+        
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const nextBtn = document.getElementById('next-btn');
+        const nextBtnContainer = document.getElementById('next-btn-container');
+        const feedbackContainer = document.getElementById('feedback-container');
+        const tracker = document.getElementById('question-tracker');
+        const scoreUI = document.getElementById('current-score');
+
+        startBtn.addEventListener('click', () => {
+            quizIntro.classList.add('hidden');
+            quizContainer.classList.remove('hidden');
+            loadQuestion();
+        });
+
+        function loadQuestion() {
+            hasAnswered = false;
+            feedbackContainer.classList.add('hidden');
+            nextBtnContainer.classList.add('hidden');
+            
+            const q = quizData[currentQuestion];
+            tracker.innerText = `Pertanyaan ${currentQuestion + 1} dari ${quizData.length}`;
+            questionText.innerText = q.question;
+            
+            optionsContainer.innerHTML = '';
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'w-full text-left p-4 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 transition duration-200 focus:outline-none';
+                btn.innerHTML = `<span class="inline-block w-6 text-brand-400 font-bold">${String.fromCharCode(65 + index)}.</span> ${opt}`;
+                btn.onclick = () => selectAnswer(index, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectAnswer(index, selectedBtn) {
+            if (hasAnswered) return;
+            hasAnswered = true;
+            
+            const q = quizData[currentQuestion];
+            const isCorrect = index === q.answer;
+            
+            // Style all buttons
+            const buttons = optionsContainer.querySelectorAll('button');
+            buttons.forEach((btn, i) => {
+                btn.classList.remove('hover:bg-slate-700');
+                if (i === q.answer) {
+                    btn.classList.add('bg-green-600', 'border-green-400', 'text-white');
+                } else if (i === index && !isCorrect) {
+                    btn.classList.add('bg-red-600', 'border-red-400', 'text-white');
+                } else {
+                    btn.classList.add('opacity-50', 'cursor-not-allowed');
+                }
+            });
+
+            // Feedback
+            feedbackContainer.classList.remove('hidden');
+            if (isCorrect) {
+                score += 20;
+                scoreUI.innerText = score;
+                feedbackContainer.innerHTML = `<i class="fa-solid fa-circle-check"></i> <strong>Benar!</strong> ${q.explanation}`;
+                feedbackContainer.className = 'mt-6 p-4 rounded-xl text-sm font-medium bg-green-900/50 text-green-200 border border-green-700 block';
+            } else {
+                feedbackContainer.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> <strong>Salah.</strong> ${q.explanation}`;
+                feedbackContainer.className = 'mt-6 p-4 rounded-xl text-sm font-medium bg-red-900/50 text-red-200 border border-red-700 block';
+            }
+
+            nextBtnContainer.classList.remove('hidden');
+        }
+
+        nextBtn.addEventListener('click', () => {
+            currentQuestion++;
+            if (currentQuestion < quizData.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        });
+
+        function showResults() {
+            quizContainer.classList.add('hidden');
+            resultContainer.classList.remove('hidden');
+            document.getElementById('final-score').innerText = score + " / 100";
+        }
+
+        document.getElementById('restart-btn').addEventListener('click', () => {
+            currentQuestion = 0;
+            score = 0;
+            scoreUI.innerText = '0';
+            resultContainer.classList.add('hidden');
+            quizIntro.classList.remove('hidden');
+        });
+
+    </script>
+
+</body></html>
